@@ -1,0 +1,45 @@
+@ChatBot_HostAddress = http://localhost:5032
+
+### 1. Ingest bằng raw text (JSON)
+POST {{ChatBot_HostAddress}}/api/documents/ingest
+Content-Type: application/json
+
+{
+  "filename": "chinh-sach-don-hang.txt",
+  "content": "Chính sách xử lý đơn hàng trễ:\n\nKhi đơn hàng bị trễ so với thời gian giao dự kiến, nhân viên kinh doanh cần thực hiện các bước sau:\n1. Kiểm tra trạng thái đơn hàng trên hệ thống ERP, mục Quản lý đơn hàng.\n2. Liên hệ bộ phận kho vận để xác nhận nguyên nhân trễ (thiếu hàng, lỗi vận chuyển, lỗi hệ thống).\n3. Thông báo cho khách hàng trong vòng 24 giờ kể từ khi phát hiện trễ, kèm thời gian giao hàng mới dự kiến.\n4. Nếu trễ quá 7 ngày, đề xuất chiết khấu 5% hoặc miễn phí vận chuyển cho đơn hàng tiếp theo.\n5. Ghi nhận sự cố vào module Báo cáo chất lượng dịch vụ để theo dõi.\n\nMọi thắc mắc liên quan đến đơn hàng trễ, vui lòng liên hệ phòng Chăm sóc khách hàng qua email cskh@congty.vn hoặc hotline nội bộ 1900."
+}
+
+### 2. Ingest bằng file upload (.txt) - cần file thực tế trên máy, đổi đường dẫn cho phù hợp
+POST {{ChatBot_HostAddress}}/api/documents/ingest
+Content-Type: multipart/form-data; boundary=----boundary
+
+------boundary
+Content-Disposition: form-data; name="file"; filename="hoan-tra-hang.txt"
+Content-Type: text/plain
+
+Chính sách hoàn trả hàng hoá:
+Khách hàng được đổi trả trong vòng 30 ngày kể từ ngày nhận hàng nếu sản phẩm còn nguyên tem, chưa qua sử dụng.
+Quy trình hoàn trả thực hiện trên module Quản lý trả hàng trong hệ thống ERP.
+------boundary--
+
+### 3. Hỏi đáp RAG
+POST {{ChatBot_HostAddress}}/api/chat/ask
+Content-Type: application/json
+
+{
+  "question": "Đơn hàng trễ thì làm sao?"
+}
+
+### 4. Câu hỏi mẫu khác
+POST {{ChatBot_HostAddress}}/api/chat/ask
+Content-Type: application/json
+
+{
+  "question": "Chính sách đổi trả hàng như thế nào?"
+}
+
+### 5. Danh sách tài liệu đã index
+GET {{ChatBot_HostAddress}}/api/documents
+
+### 6. Xoá một tài liệu theo filename (để re-index)
+DELETE {{ChatBot_HostAddress}}/api/documents/chinh-sach-don-hang.txt
