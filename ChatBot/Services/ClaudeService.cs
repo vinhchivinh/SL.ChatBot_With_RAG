@@ -10,7 +10,7 @@ namespace ChatBot.Services;
 /// Build prompt RAG (ngữ cảnh + câu hỏi) và gọi Claude API để sinh câu trả lời tiếng Việt.
 /// Đây là bước duy nhất gọi ra ngoài (embedding chạy local ở EmbeddingService).
 /// </summary>
-public class ClaudeService : IClaudeService
+public class ClaudeService : ILLMService
 {
     private const string SystemPrompt = """
         Bạn là trợ lý ảo hỗ trợ nghiệp vụ cho hệ thống ERP của công ty.

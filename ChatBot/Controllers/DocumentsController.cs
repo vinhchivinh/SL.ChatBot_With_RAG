@@ -1,4 +1,5 @@
 using System.Text;
+using Anthropic.Models.Messages;
 using ChatBot.Models.Dtos;
 using ChatBot.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -25,11 +26,11 @@ public class DocumentsController : ControllerBase
     public async Task<ActionResult<IngestResponse>> IngestFile(
         IFormFile file,
         [FromForm] string? filename,
-        CancellationToken ct)
+        CancellationToken ct) 
     {
         if (file is null || file.Length == 0)
         {
-            return BadRequest(new { error = "File rỗng hoặc không hợp lệ." });
+            return BadRequest(new { error = Commons.Message.MSG_ERROR_FILE_INVALID});
         }
 
         string content;
